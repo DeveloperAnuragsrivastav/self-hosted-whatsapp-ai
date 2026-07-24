@@ -15,16 +15,10 @@ ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
 
 WORKDIR /app
 
-# Ensure /app has the right permissions for the node user
-RUN chown node:node /app
-
-# Switch to non-root user
-USER node
-
-COPY --chown=node:node package*.json ./
+COPY package*.json ./
 RUN npm install
 
-COPY --chown=node:node . .
+COPY . .
 
 EXPOSE 3000
 
