@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your WhatsApp Assistant</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="top-bar-accent"></div>
+    
+    <header class="dashboard-header">
+        <div class="brand-title">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+            </svg>
+            <h1>Your WhatsApp Assistant</h1>
+            <span class="brand-badge">Active</span>
+        </div>
+    </header>
+
+    <div class="dashboard">
+        <aside class="sidebar">
+            <ul class="nav-menu">
+                <li class="nav-item active" onclick="switchTab('settings')" id="nav-settings">
+                    ⚙️ Auto-Replies
+                </li>
+                <li class="nav-item" onclick="switchTab('templates')" id="nav-templates">
+                    📝 Saved Messages
+                </li>
+                <li class="nav-item" onclick="switchTab('campaigns')" id="nav-campaigns">
+                    🚀 Send to Many
+                </li>
+            </ul>
+
+            <div class="status-card" id="statusCard">
+                <h3>WhatsApp Connection</h3>
+                <div class="qr-container" id="qrContainer">
+                    <p style="color: #667781; font-size: 0.85rem;">Getting QR code ready...</p>
+                </div>
+                <div class="status-indicator" id="statusIndicator">
+                    <span class="dot"></span> <span id="statusText">Not connected</span>
+                </div>
+            </div>
+        </aside>
+        
+        <!-- ================= SETTINGS VIEW ================= -->
+        <main class="content view-section" id="view-settings">
+            <div class="page-intro">
+                <h2>Assistant Settings</h2>
+                <p>Choose who your assistant talks to and what it ignores.</p>
+            </div>
+
+            <div class="settings-grid">
+                
+                <!-- Safety & General -->
+                <div class="card">
+                    <div class="card-header">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        </svg>
+                        <h3>Safety Rules</h3>
+                    </div>
+                    <p class="subtitle">Basic settings to keep things safe.</p>
+                    
+                    <div class="toggle-group">
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="draftModeToggle" onchange="toggleSetting('draftMode')">
+                            <span class="slider"></span>
+                        </label>
+                        <span>Review before sending</span>
+                    </div>
+
+                    <div class="toggle-group">
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="replyToGroupsToggle" onchange="toggleSetting('replyToGroups')">
+                            <span class="slider"></span>
+                        </label>
+                        <span>Reply in groups</span>
+                    </div>
+
+                    <div class="toggle-group">
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="ignoreMediaToggle" onchange="toggleSetting('ignoreMedia')">
+                            <span class="slider"></span>
+                        </label>
+                        <span>Ignore photos and voice notes</span>
+                    </div>
+
+                    <h4 style="margin-top: 1.25rem; font-size: 0.9rem; font-weight: 600; color: var(--text-primary);">Stop Words</h4>
+                    <p style="font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 0.5rem;">If a message has these words, your assistant stays quiet.</p>
+                    <div class="input-group">
+                        <input type="text" id="emergencyKeywordsInput" placeholder="e.g. urgent, police, password">
+                        <button class="danger-btn" onclick="addSetting('emergencyKeywords')">Add</button>
+                    </div>
+                    <ul class="settings-list" id="emergencyKeywordsList" style="margin-bottom: 1rem;"></ul>
+
+                    <h4 style="font-size: 0.9rem; font-weight: 600; color: var(--text-primary);">Pause Assistant (Minutes)</h4>
+                    <p style="font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 0.5rem;">If you reply yourself, the assistant takes a break for this long.</p>
+                    <div class="input-group">
+                        <input type="number" id="handoverCooldownMinutes" min="1" value="60" onchange="saveInputSetting('handoverCooldownMinutes')">
+                    </div>
+                </div>
+
+                <!-- Access Control -->
+                <div class="card">
+                    <div class="card-header">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                            <circle cx="9" cy="7" r="4"/>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                        </svg>
+                        <h3>Who to Talk To</h3>
+                    </div>
+                    <p class="subtitle">Decide who gets automatic replies.</p>
+                    
+                    <h4 style="font-size: 0.9rem; font-weight: 600; color: var(--text-primary);">Only Talk To</h4>
+                    <p style="font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 0.5rem;">If you add numbers here, your assistant will ignore everyone else.</p>
+                    <div class="input-group">
+                        <input type="text" id="replyToInput" placeholder="e.g. 1234567890">
+                        <button onclick="addSetting('replyTo')">Add</button>
+                    </div>
+                    <ul class="settings-list" id="replyToList" style="margin-bottom: 1.25rem;"></ul>
+
+                    <h4 style="font-size: 0.9rem; font-weight: 600; color: var(--text-primary);">Never Talk To</h4>
+                    <p style="font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Your assistant will never reply to these people.</p>
+                    <div class="input-group">
+                        <input type="text" id="doNotReplyInput" placeholder="e.g. 0987654321">
+                        <button onclick="addSetting('doNotReply')">Add</button>
+                    </div>
+                    <ul class="settings-list" id="doNotReplyList" style="margin-bottom: 1.25rem;"></ul>
+
+                    <h4 style="font-size: 0.9rem; font-weight: 600; color: var(--text-primary);">Words to Ignore</h4>
+                    <p style="font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Don't reply to messages with these words.</p>
+                    <div class="input-group">
+                        <input type="text" id="skipKeywordsInput" placeholder="e.g. stop, wrong number">
+                        <button onclick="addSetting('skipKeywords')">Add</button>
+                    </div>
+                    <ul class="settings-list" id="skipKeywordsList"></ul>
+                </div>
+
+                <!-- AI Prompt -->
+                <div class="card" style="grid-column: 1 / -1;">
+                    <div class="card-header">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2a10 10 0 1 0 10 10H12V2z"/>
+                            <path d="M12 12L2.5 7.5"/>
+                            <path d="M12 12v10"/>
+                        </svg>
+                        <h3>Teach Your Assistant</h3>
+                    </div>
+                    <p class="subtitle">Write down exactly how you want your assistant to talk and behave.</p>
+                    <textarea id="systemPromptInput" rows="6" placeholder="e.g. You are my friendly assistant. Always say hello first..."></textarea>
+                    <button class="save-btn" onclick="savePrompt()">Save Instructions</button>
+                </div>
+
+                <!-- Drafts Inbox -->
+                <div class="card draft-card">
+                    <div class="card-header">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                            <polyline points="22,6 12,13 2,6"/>
+                        </svg>
+                        <h3>Messages to Review</h3>
+                    </div>
+                    <p class="subtitle">Check and approve these replies before they go out.</p>
+                    
+                    <div class="draft-chat-container" id="draftsContainer">
+                        <p id="noDraftsMsg" style="color: var(--text-muted); font-style: italic; font-size: 0.9rem; text-align: center; padding: 1rem;">No messages waiting for review.</p>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+
+        <!-- ================= TEMPLATES VIEW ================= -->
+        <main class="content view-section" id="view-templates" style="display:none;">
+            <div class="page-intro">
+                <h2>Saved Messages</h2>
+                <p>Write messages you send often, and use {{name}} to personalize them.</p>
+            </div>
+            
+            <div class="card" style="margin-bottom: 2rem;">
+                <div class="card-header">
+                    <h3>Write a Message</h3>
+                </div>
+                <div class="input-group">
+                    <input type="text" id="templateNameInput" placeholder="e.g. Weekend Greeting">
+                </div>
+                <textarea id="templateTextInput" rows="4" placeholder="Hi {{name}}, hope you're having a great weekend!"></textarea>
+                <button onclick="saveTemplate()">Save</button>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3>Your Messages</h3>
+                </div>
+                <div id="templatesListContainer" style="display:flex; flex-direction:column; gap:1rem; margin-top:1rem;">
+                    <!-- Rendered by JS -->
+                </div>
+            </div>
+        </main>
+
+        <!-- ================= CAMPAIGNS VIEW ================= -->
+        <main class="content view-section" id="view-campaigns" style="display:none;">
+            <div class="page-intro">
+                <h2>Send to Many</h2>
+                <p>Send a message to a list of people, one by one.</p>
+            </div>
+            
+            <div class="settings-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Start Sending</h3>
+                    </div>
+                    
+                    <h4 style="margin-top: 1rem; font-size:0.9rem; color:var(--text-primary);">Name this batch</h4>
+                    <input type="text" id="campaignNameInput" placeholder="e.g. Monday Update" style="width:100%; margin-bottom:1rem;">
+                    
+                    <h4 style="font-size:0.9rem; color:var(--text-primary);">Choose a message</h4>
+                    <select id="campaignTemplateSelect" style="width:100%; margin-bottom:1rem;">
+                        <option value="">-- Pick one --</option>
+                    </select>
+
+                    <h4 style="font-size:0.9rem; color:var(--text-primary);">List of Contacts</h4>
+                    <p style="font-size:0.75rem; color:var(--text-secondary); margin-bottom:0.5rem;">Add the numbers and names here.<br>Example: <code>[{"number": "919876543210", "name": "John"}]</code></p>
+                    <textarea id="campaignAudienceInput" rows="5" placeholder='[{"number": "1234567890", "name": "Alice"}]'></textarea>
+
+                    <h4 style="font-size:0.9rem; color:var(--text-primary);">Wait Between Messages (Seconds)</h4>
+                    <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
+                        <div style="flex:1;">
+                            <label style="font-size:0.8rem; color:var(--text-secondary);">Wait at least</label>
+                            <input type="number" id="delayMinInput" value="8" min="1" style="width:100%;">
+                        </div>
+                        <div style="flex:1;">
+                            <label style="font-size:0.8rem; color:var(--text-secondary);">Wait up to</label>
+                            <input type="number" id="delayMaxInput" value="25" min="2" style="width:100%;">
+                        </div>
+                    </div>
+
+                    <button class="save-btn" onclick="startCampaign()">Start</button>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Past and Current Sends</h3>
+                    </div>
+                    <button onclick="loadCampaigns()" style="margin-bottom: 1rem; font-size:0.8rem; padding: 0.4rem 0.8rem;">Refresh</button>
+                    <div id="campaignsListContainer" style="display:flex; flex-direction:column; gap:1rem;"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

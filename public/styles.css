@@ -1,0 +1,535 @@
+:root {
+    --bg-color: #0b141a;
+    --panel-bg: #111b21;
+    --card-bg: #202c33;
+    --card-bg-hover: #222e35;
+    --border-color: #2a3942;
+    --accent: #00a884;
+    --accent-hover: #008069;
+    --accent-bright: #25d366;
+    --outgoing-bubble: #005c4b;
+    --incoming-bubble: #202c33;
+    --text-primary: #e9edef;
+    --text-secondary: #8696a0;
+    --text-muted: #667781;
+    --danger: #ea868f;
+    --danger-bg: #4a1d24;
+    --danger-hover: #f15c6d;
+    --success: #00a884;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* WhatsApp Top Bar Accent */
+.top-bar-accent {
+    height: 4px;
+    background: linear-gradient(90deg, #00a884, #25d366);
+    width: 100%;
+}
+
+.dashboard-header {
+    background: var(--panel-bg);
+    border-bottom: 1px solid var(--border-color);
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.brand-title {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.brand-title svg {
+    color: var(--accent-bright);
+}
+
+.brand-title h1 {
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: -0.2px;
+}
+
+.brand-badge {
+    background: rgba(0, 168, 132, 0.15);
+    color: var(--accent-bright);
+    padding: 0.2rem 0.6rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    border: 1px solid rgba(0, 168, 132, 0.3);
+}
+
+.dashboard {
+    display: flex;
+    flex: 1;
+    max-width: 1600px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+/* Sidebar & Navigation */
+.sidebar {
+    width: 340px;
+    background: var(--panel-bg);
+    padding: 1.5rem;
+    border-right: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.nav-menu {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.nav-item {
+    padding: 1rem 1.25rem;
+    border-radius: 8px;
+    color: var(--text-secondary);
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.nav-item:hover {
+    background: var(--card-bg);
+    color: var(--text-primary);
+}
+
+.nav-item.active {
+    background: var(--card-bg);
+    color: var(--accent-bright);
+    border-left: 4px solid var(--accent-bright);
+}
+
+.status-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.25rem;
+    text-align: center;
+    margin-top: auto;
+}
+
+.status-card h3 {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.qr-container {
+    margin: 1rem 0;
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.qr-container img {
+    max-width: 100%;
+    height: auto;
+}
+
+.status-indicator {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    background: rgba(255,255,255,0.04);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #f15c6d;
+}
+
+.dot.connected {
+    background-color: var(--accent-bright);
+    box-shadow: 0 0 8px var(--accent-bright);
+}
+
+/* Main Content */
+.content {
+    flex: 1;
+    padding: 2rem;
+    overflow-y: auto;
+}
+
+.page-intro {
+    margin-bottom: 2rem;
+}
+
+.page-intro h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.35rem;
+    color: var(--text-primary);
+}
+
+.page-intro p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+
+.settings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+    gap: 1.5rem;
+}
+
+.card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: border-color 0.2s ease;
+}
+
+.card:hover {
+    border-color: rgba(134, 150, 160, 0.3);
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.5rem;
+}
+
+.card-header h3 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.card-header svg {
+    color: var(--accent);
+}
+
+.subtitle {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    margin-bottom: 1.25rem;
+    line-height: 1.4;
+}
+
+.input-group {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+}
+
+input[type="text"], input[type="number"], select {
+    flex: 1;
+    background: var(--panel-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 0.65rem 1rem;
+    border-radius: 8px;
+    outline: none;
+    font-size: 0.9rem;
+    transition: border-color 0.2s ease;
+}
+
+input[type="text"]:focus, input[type="number"]:focus, select:focus, textarea:focus {
+    border-color: var(--accent);
+}
+
+button {
+    background: var(--accent);
+    color: #111b21;
+    border: none;
+    padding: 0.65rem 1.25rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+button:hover {
+    background: var(--accent-hover);
+}
+
+.danger-btn {
+    background: var(--danger-bg);
+    color: var(--danger);
+    border: 1px solid rgba(234, 134, 143, 0.3);
+}
+
+.danger-btn:hover {
+    background: rgba(234, 134, 143, 0.2);
+}
+
+button:active, .danger-btn:active {
+    transform: scale(0.98);
+}
+
+.save-btn {
+    width: 100%;
+    background: var(--accent);
+    color: #111b21;
+    padding: 0.8rem;
+    font-size: 0.95rem;
+}
+
+.settings-list {
+    list-style: none;
+    max-height: 180px;
+    overflow-y: auto;
+}
+
+.settings-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--panel-bg);
+    border: 1px solid var(--border-color);
+    padding: 0.6rem 0.9rem;
+    margin-bottom: 0.5rem;
+    border-radius: 6px;
+    font-size: 0.88rem;
+    color: var(--text-primary);
+    animation: fadeIn 0.2s ease;
+}
+
+.delete-btn {
+    background: transparent;
+    color: var(--text-secondary);
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+}
+
+.delete-btn:hover {
+    background: rgba(234, 134, 143, 0.15);
+    color: var(--danger);
+}
+
+/* WhatsApp Styled Toggles */
+.toggle-group {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    background: var(--panel-bg);
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.toggle-group span {
+    font-size: 0.9rem;
+    color: var(--text-primary);
+}
+
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 42px;
+    height: 22px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: var(--border-color);
+    transition: .3s;
+    border-radius: 20px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 3px;
+    bottom: 3px;
+    background-color: var(--text-secondary);
+    transition: .3s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: var(--accent);
+}
+
+input:checked + .slider:before {
+    transform: translateX(20px);
+    background-color: #111b21;
+}
+
+/* Textarea */
+textarea {
+    width: 100%;
+    background: var(--panel-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 0.8rem 1rem;
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.2s ease;
+    resize: vertical;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+/* WhatsApp Chat Bubble Styling for Approval Inbox */
+.draft-card {
+    grid-column: 1 / -1;
+    border-color: rgba(0, 168, 132, 0.4);
+    background: var(--card-bg);
+}
+
+.draft-chat-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    background: #0b141a;
+    padding: 1.5rem;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    background-image: radial-gradient(#202c33 1px, transparent 1px);
+    background-size: 20px 20px;
+}
+
+.chat-bubble-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    background: rgba(17, 27, 33, 0.7);
+    border-radius: 12px;
+    padding: 1.25rem;
+    border: 1px solid var(--border-color);
+}
+
+.chat-bubble-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.contact-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.contact-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #667781;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+.chat-bubble {
+    max-width: 85%;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    line-height: 1.45;
+    position: relative;
+}
+
+.chat-bubble.incoming {
+    background: var(--incoming-bubble);
+    color: var(--text-primary);
+    align-self: flex-start;
+    border-top-left-radius: 0;
+    border: 1px solid var(--border-color);
+}
+
+.chat-bubble.outgoing-draft {
+    background: var(--outgoing-bubble);
+    color: var(--text-primary);
+    align-self: flex-end;
+    border-top-right-radius: 0;
+    width: 100%;
+    max-width: 100%;
+}
+
+.chat-bubble.outgoing-draft textarea {
+    background: rgba(0,0,0,0.25);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: #e9edef;
+    margin-top: 0.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.draft-actions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: flex-end;
+}
+
+.approve-btn {
+    background: var(--accent-bright);
+    color: #0b141a;
+}
+
+.approve-btn:hover {
+    background: #20bd5a;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--panel-bg); }
+::-webkit-scrollbar-thumb { background: #374248; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #4a555c; }
