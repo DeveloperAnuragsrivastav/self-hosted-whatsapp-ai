@@ -1,259 +1,387 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your WhatsApp Assistant</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>assistant · self-hosted</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="top-bar-accent"></div>
-    
-    <header class="dashboard-header">
-        <div class="brand-title">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
-            </svg>
-            <h1>Your WhatsApp Assistant</h1>
-            <span class="brand-badge">Active</span>
+
+<div class="app">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="side-head">
+      <div class="logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+      </div>
+      <div class="side-head-text">
+        <span class="name">assistant</span>
+        <span class="self-hosted-chip">self-hosted</span>
+      </div>
+    </div>
+
+    <div class="nav-scroll">
+      <div class="nav-section">
+        <div class="nav-section-label">General</div>
+        <div class="nav-item active" data-page="overview">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
+          Overview
         </div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-label">Assistant</div>
+        <div class="nav-item" data-page="auto">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.34 1.87l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.7 1.7 0 00-1.87-.34 1.7 1.7 0 00-1 1.55V21a2 2 0 01-4 0v-.09a1.7 1.7 0 00-1-1.55 1.7 1.7 0 00-1.87.34l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.7 1.7 0 00.34-1.87 1.7 1.7 0 00-1.55-1H3a2 2 0 010-4h.09a1.7 1.7 0 001.55-1 1.7 1.7 0 00-.34-1.87l-.06-.06a2 2 0 112.83-2.83l.06.06a1.7 1.7 0 001.87.34H9a1.7 1.7 0 001-1.55V3a2 2 0 014 0v.09a1.7 1.7 0 001 1.55 1.7 1.7 0 001.87-.34l.06-.06a2 2 0 112.83 2.83l-.06.06a1.7 1.7 0 00-.34 1.87V9a1.7 1.7 0 001.55 1H21a2 2 0 010 4h-.09a1.7 1.7 0 00-1.55 1z"/></svg>
+          Auto-replies
+        </div>
+        <div class="nav-item" data-page="review">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+          Review queue
+          <span class="badge-count" id="reviewCount">0</span>
+        </div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-label">Messaging</div>
+        <div class="nav-item" data-page="saved">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M11 4H6a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2v-5"/><path d="M18.4 2.6a2 2 0 112.8 2.8L12 14.7l-4 1 1-4z"/></svg>
+          Saved messages
+        </div>
+        <div class="nav-item" data-page="bulk">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+          Send to many
+        </div>
+      </div>
+    </div>
+
+    <!-- CONNECTION CARD -->
+    <div class="conn-card">
+      <div class="conn-head">
+        <span class="conn-dot" id="connDot"></span>
+        <span class="conn-title" id="connTitle">Disconnected</span>
+      </div>
+      <div class="qr-box" id="qrBox">
+        <span style="font-size: 11.5px; color: var(--text-faint);">Getting QR code ready...</span>
+      </div>
+      <button class="conn-btn" id="connBtn" onclick="refreshConnection()">Refresh status</button>
+    </div>
+
+    <div class="side-foot">
+      <div class="side-foot-row">
+        <a href="https://github.com/pedroslopez/whatsapp-web.js" target="_blank" rel="noopener">Documentation</a>
+        <a href="#" onclick="showToast('Version 1.0.0 is up to date'); return false;">Changelog</a>
+      </div>
+      <div class="side-foot-row">
+        <span class="ver-badge">v1.0.0</span>
+        <a href="#" onclick="showToast('Open-source MIT License'); return false;">MIT License</a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN COLUMN -->
+  <div class="main-col">
+    <header class="topbar">
+      <div class="crumbs">
+        <span>assistant</span><span class="sep">/</span><span class="cur" id="crumbCur">Overview</span>
+      </div>
+      <div class="search" tabindex="0" id="searchBar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input type="text" id="searchInput" placeholder="Search settings or saved messages..." style="background:transparent; border:none; padding:0; height:100%; color:var(--text); font-size:12.5px;">
+        <span class="kbd">⌘K</span>
+      </div>
+      <div class="top-actions">
+        <button class="gh-badge" onclick="window.open('https://github.com/pedroslopez/whatsapp-web.js','_blank')">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .3a12 12 0 00-3.8 23.4c.6.1.8-.3.8-.6v-2.2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1.1-.8.1-.7.1-.7 1.2.1 1.9 1.3 1.9 1.3 1.1 1.9 2.9 1.3 3.6 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-5.9 0-1.3.5-2.4 1.3-3.2-.1-.3-.6-1.6.1-3.2 0 0 1-.3 3.4 1.2a11.5 11.5 0 016.2 0c2.4-1.6 3.4-1.2 3.4-1.2.7 1.6.2 2.9.1 3.2.8.8 1.3 1.9 1.3 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0012 .3z"/></svg>
+          <span class="stars">★ WhatsApp AI</span>
+        </button>
+        <button class="icon-btn" onclick="toggleTheme()" id="themeBtn" title="Toggle theme">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        </button>
+        <div class="avatar" title="Self-hosted Admin">AI</div>
+      </div>
     </header>
 
-    <div class="dashboard">
-        <aside class="sidebar">
-            <ul class="nav-menu">
-                <li class="nav-item active" onclick="switchTab('settings')" id="nav-settings">
-                    ⚙️ Auto-Replies
-                </li>
-                <li class="nav-item" onclick="switchTab('templates')" id="nav-templates">
-                    📝 Saved Messages
-                </li>
-                <li class="nav-item" onclick="switchTab('campaigns')" id="nav-campaigns">
-                    🚀 Send to Many
-                </li>
-            </ul>
+    <div class="content">
 
-            <div class="status-card" id="statusCard">
-                <h3>WhatsApp Connection</h3>
-                <div class="qr-container" id="qrContainer">
-                    <p style="color: #667781; font-size: 0.85rem;">Getting QR code ready...</p>
+      <!-- OVERVIEW PAGE -->
+      <div class="page active" id="page-overview">
+        <div class="page-head">
+          <div>
+            <h1>Overview</h1>
+            <p>How the assistant has been behaving across your connected number.</p>
+          </div>
+        </div>
+
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="stat-label">Total Sent</div>
+            <div class="stat-value" id="statReplied">0</div>
+            <div class="stat-delta up">Active Session</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Waiting for review</div>
+            <div class="stat-value" id="statReview">0</div>
+            <div class="stat-delta" id="statReviewDelta">Cleared out</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Active batches</div>
+            <div class="stat-value" id="statBatches">0</div>
+            <div class="stat-delta" id="statBatchesDelta">None running</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Connection status</div>
+            <div class="stat-value" id="statUptime" style="font-size:16px; margin-top:4px;">Disconnected</div>
+            <div class="stat-delta down" id="statUptimeSub">Not connected</div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <h2>Recent activity</h2>
+            <button class="link-btn" onclick="renderActivityLog()">Refresh</button>
+          </div>
+          <div class="panel-body pad-0">
+            <table>
+              <thead><tr><th style="width:110px;">Time</th><th style="width:140px;">Event</th><th>Detail</th></tr></thead>
+              <tbody id="activityTbody">
+                <tr><td colspan="3" class="cell-empty">No activity recorded in this session yet.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- AUTO-REPLIES PAGE -->
+      <div class="page" id="page-auto">
+        <div class="page-head">
+          <div>
+            <h1>Auto-replies</h1>
+            <p>Every incoming message is checked in this order — safety first, then audience, then the reply itself.</p>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div>
+            <div class="panel">
+              <div class="panel-head">
+                <div><h2>Safety rules</h2><div class="sub">Guardrails that apply to everyone</div></div>
+                <span class="step-marker">STEP 01</span>
+              </div>
+              <div class="panel-body">
+                <div class="row">
+                  <div class="row-info"><div class="t">Review before sending</div><div class="h">Hold replies for your approval first</div></div>
+                  <div class="switch" id="draftModeToggle" onclick="toggleSetting('draftMode')"></div>
                 </div>
-                <div class="status-indicator" id="statusIndicator">
-                    <span class="dot"></span> <span id="statusText">Not connected</span>
+                <div class="row">
+                  <div class="row-info"><div class="t">Reply in groups</div><div class="h">Let the assistant answer in group chats</div></div>
+                  <div class="switch" id="replyToGroupsToggle" onclick="toggleSetting('replyToGroups')"></div>
                 </div>
-            </div>
-        </aside>
-        
-        <!-- ================= SETTINGS VIEW ================= -->
-        <main class="content view-section" id="view-settings">
-            <div class="page-intro">
-                <h2>Assistant Settings</h2>
-                <p>Choose who your assistant talks to and what it ignores.</p>
-            </div>
-
-            <div class="settings-grid">
-                
-                <!-- Safety & General -->
-                <div class="card">
-                    <div class="card-header">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                        </svg>
-                        <h3>Safety Rules</h3>
-                    </div>
-                    <p class="subtitle">Basic settings to keep things safe.</p>
-                    
-                    <div class="toggle-group">
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="draftModeToggle" onchange="toggleSetting('draftMode')">
-                            <span class="slider"></span>
-                        </label>
-                        <span>Review before sending</span>
-                    </div>
-
-                    <div class="toggle-group">
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="replyToGroupsToggle" onchange="toggleSetting('replyToGroups')">
-                            <span class="slider"></span>
-                        </label>
-                        <span>Reply in groups</span>
-                    </div>
-
-                    <div class="toggle-group">
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="ignoreMediaToggle" onchange="toggleSetting('ignoreMedia')">
-                            <span class="slider"></span>
-                        </label>
-                        <span>Ignore photos and voice notes</span>
-                    </div>
-
-                    <h4 style="margin-top: 1.25rem; font-size: 0.9rem; font-weight: 600; color: var(--text-primary);">Stop Words</h4>
-                    <p style="font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 0.5rem;">If a message has these words, your assistant stays quiet.</p>
-                    <div class="input-group">
-                        <input type="text" id="emergencyKeywordsInput" placeholder="e.g. urgent, police, password">
-                        <button class="danger-btn" onclick="addSetting('emergencyKeywords')">Add</button>
-                    </div>
-                    <ul class="settings-list" id="emergencyKeywordsList" style="margin-bottom: 1rem;"></ul>
-
-                    <h4 style="font-size: 0.9rem; font-weight: 600; color: var(--text-primary);">Pause Assistant (Minutes)</h4>
-                    <p style="font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 0.5rem;">If you reply yourself, the assistant takes a break for this long.</p>
-                    <div class="input-group">
-                        <input type="number" id="handoverCooldownMinutes" min="1" value="60" onchange="saveInputSetting('handoverCooldownMinutes')">
-                    </div>
+                <div class="row">
+                  <div class="row-info"><div class="t">Ignore photos and voice notes</div><div class="h">Skip replying to media messages</div></div>
+                  <div class="switch" id="ignoreMediaToggle" onclick="toggleSetting('ignoreMedia')"></div>
                 </div>
 
-                <!-- Access Control -->
-                <div class="card">
-                    <div class="card-header">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-                            <circle cx="9" cy="7" r="4"/>
-                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-                            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-                        </svg>
-                        <h3>Who to Talk To</h3>
-                    </div>
-                    <p class="subtitle">Decide who gets automatic replies.</p>
-                    
-                    <h4 style="font-size: 0.9rem; font-weight: 600; color: var(--text-primary);">Only Talk To</h4>
-                    <p style="font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 0.5rem;">If you add numbers here, your assistant will ignore everyone else.</p>
-                    <div class="input-group">
-                        <input type="text" id="replyToInput" placeholder="e.g. 1234567890">
-                        <button onclick="addSetting('replyTo')">Add</button>
-                    </div>
-                    <ul class="settings-list" id="replyToList" style="margin-bottom: 1.25rem;"></ul>
-
-                    <h4 style="font-size: 0.9rem; font-weight: 600; color: var(--text-primary);">Never Talk To</h4>
-                    <p style="font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Your assistant will never reply to these people.</p>
-                    <div class="input-group">
-                        <input type="text" id="doNotReplyInput" placeholder="e.g. 0987654321">
-                        <button onclick="addSetting('doNotReply')">Add</button>
-                    </div>
-                    <ul class="settings-list" id="doNotReplyList" style="margin-bottom: 1.25rem;"></ul>
-
-                    <h4 style="font-size: 0.9rem; font-weight: 600; color: var(--text-primary);">Words to Ignore</h4>
-                    <p style="font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Don't reply to messages with these words.</p>
-                    <div class="input-group">
-                        <input type="text" id="skipKeywordsInput" placeholder="e.g. stop, wrong number">
-                        <button onclick="addSetting('skipKeywords')">Add</button>
-                    </div>
-                    <ul class="settings-list" id="skipKeywordsList"></ul>
+                <div class="field">
+                  <label>Stop words</label>
+                  <div class="h">If a message contains these, the assistant stays quiet.</div>
+                  <div class="inline-add">
+                    <input type="text" class="mono-field" placeholder="e.g. urgent, password" id="emergencyKeywordsInput">
+                    <button class="btn" onclick="addChip('emergencyKeywordsInput','emergencyKeywordsList','warn','emergencyKeywords')">Add</button>
+                  </div>
+                  <div class="chip-row" id="emergencyKeywordsList"></div>
                 </div>
 
-                <!-- AI Prompt -->
-                <div class="card" style="grid-column: 1 / -1;">
-                    <div class="card-header">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M12 2a10 10 0 1 0 10 10H12V2z"/>
-                            <path d="M12 12L2.5 7.5"/>
-                            <path d="M12 12v10"/>
-                        </svg>
-                        <h3>Teach Your Assistant</h3>
-                    </div>
-                    <p class="subtitle">Write down exactly how you want your assistant to talk and behave.</p>
-                    <textarea id="systemPromptInput" rows="6" placeholder="e.g. You are my friendly assistant. Always say hello first..."></textarea>
-                    <button class="save-btn" onclick="savePrompt()">Save Instructions</button>
+                <div class="field">
+                  <label>Pause assistant (minutes)</label>
+                  <div class="h">If you reply yourself, it steps back for this long.</div>
+                  <input type="number" class="mono-field" value="60" min="1" id="handoverCooldownMinutes" onchange="saveInputSetting('handoverCooldownMinutes')" style="max-width:110px;">
                 </div>
-
-                <!-- Drafts Inbox -->
-                <div class="card draft-card">
-                    <div class="card-header">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                            <polyline points="22,6 12,13 2,6"/>
-                        </svg>
-                        <h3>Messages to Review</h3>
-                    </div>
-                    <p class="subtitle">Check and approve these replies before they go out.</p>
-                    
-                    <div class="draft-chat-container" id="draftsContainer">
-                        <p id="noDraftsMsg" style="color: var(--text-muted); font-style: italic; font-size: 0.9rem; text-align: center; padding: 1rem;">No messages waiting for review.</p>
-                    </div>
-                </div>
-
-            </div>
-        </main>
-
-        <!-- ================= TEMPLATES VIEW ================= -->
-        <main class="content view-section" id="view-templates" style="display:none;">
-            <div class="page-intro">
-                <h2>Saved Messages</h2>
-                <p>Write messages you send often, and use {{name}} to personalize them.</p>
-            </div>
-            
-            <div class="card" style="margin-bottom: 2rem;">
-                <div class="card-header">
-                    <h3>Write a Message</h3>
-                </div>
-                <div class="input-group">
-                    <input type="text" id="templateNameInput" placeholder="e.g. Weekend Greeting">
-                </div>
-                <textarea id="templateTextInput" rows="4" placeholder="Hi {{name}}, hope you're having a great weekend!"></textarea>
-                <button onclick="saveTemplate()">Save</button>
+              </div>
             </div>
 
-            <div class="card">
-                <div class="card-header">
-                    <h3>Your Messages</h3>
+            <div class="panel">
+              <div class="panel-head">
+                <div><h2>Who to talk to</h2><div class="sub">Decide who gets automatic replies</div></div>
+                <span class="step-marker">STEP 02</span>
+              </div>
+              <div class="panel-body">
+                <div class="field">
+                  <label>Only talk to</label>
+                  <div class="h">If set, everyone else is ignored.</div>
+                  <div class="inline-add">
+                    <input type="text" class="mono-field" placeholder="e.g. 919876543210" id="replyToInput">
+                    <button class="btn" onclick="addChip('replyToInput','replyToList','','replyTo')">Add</button>
+                  </div>
+                  <div class="chip-row" id="replyToList"></div>
                 </div>
-                <div id="templatesListContainer" style="display:flex; flex-direction:column; gap:1rem; margin-top:1rem;">
-                    <!-- Rendered by JS -->
+                <div class="field">
+                  <label>Never talk to</label>
+                  <div class="h">Your assistant will never reply to these numbers.</div>
+                  <div class="inline-add">
+                    <input type="text" class="mono-field" placeholder="e.g. 919812340000" id="doNotReplyInput">
+                    <button class="btn" onclick="addChip('doNotReplyInput','doNotReplyList','warn','doNotReply')">Add</button>
+                  </div>
+                  <div class="chip-row" id="doNotReplyList"></div>
                 </div>
+                <div class="field">
+                  <label>Words to ignore</label>
+                  <div class="h">Don't reply to messages containing these words.</div>
+                  <div class="inline-add">
+                    <input type="text" class="mono-field" placeholder="e.g. stop, wrong number" id="skipKeywordsInput">
+                    <button class="btn" onclick="addChip('skipKeywordsInput','skipKeywordsList','','skipKeywords')">Add</button>
+                  </div>
+                  <div class="chip-row" id="skipKeywordsList"></div>
+                </div>
+              </div>
             </div>
-        </main>
+          </div>
 
-        <!-- ================= CAMPAIGNS VIEW ================= -->
-        <main class="content view-section" id="view-campaigns" style="display:none;">
-            <div class="page-intro">
-                <h2>Send to Many</h2>
-                <p>Send a message to a list of people, one by one.</p>
+          <div class="panel">
+            <div class="panel-head">
+              <div><h2>Teach your assistant</h2><div class="sub">System instructions used to write every reply</div></div>
+              <span class="step-marker">STEP 03</span>
             </div>
-            
-            <div class="settings-grid">
-                <div class="card">
-                    <div class="card-header">
-                        <h3>Start Sending</h3>
-                    </div>
-                    
-                    <h4 style="margin-top: 1rem; font-size:0.9rem; color:var(--text-primary);">Name this batch</h4>
-                    <input type="text" id="campaignNameInput" placeholder="e.g. Monday Update" style="width:100%; margin-bottom:1rem;">
-                    
-                    <h4 style="font-size:0.9rem; color:var(--text-primary);">Choose a message</h4>
-                    <select id="campaignTemplateSelect" style="width:100%; margin-bottom:1rem;">
-                        <option value="">-- Pick one --</option>
-                    </select>
-
-                    <h4 style="font-size:0.9rem; color:var(--text-primary);">List of Contacts</h4>
-                    <p style="font-size:0.75rem; color:var(--text-secondary); margin-bottom:0.5rem;">Add the numbers and names here.<br>Example: <code>[{"number": "919876543210", "name": "John"}]</code></p>
-                    <textarea id="campaignAudienceInput" rows="5" placeholder='[{"number": "1234567890", "name": "Alice"}]'></textarea>
-
-                    <h4 style="font-size:0.9rem; color:var(--text-primary);">Wait Between Messages (Seconds)</h4>
-                    <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
-                        <div style="flex:1;">
-                            <label style="font-size:0.8rem; color:var(--text-secondary);">Wait at least</label>
-                            <input type="number" id="delayMinInput" value="8" min="1" style="width:100%;">
-                        </div>
-                        <div style="flex:1;">
-                            <label style="font-size:0.8rem; color:var(--text-secondary);">Wait up to</label>
-                            <input type="number" id="delayMaxInput" value="25" min="2" style="width:100%;">
-                        </div>
-                    </div>
-
-                    <button class="save-btn" onclick="startCampaign()">Start</button>
-                </div>
-
-                <div class="card">
-                    <div class="card-header">
-                        <h3>Past and Current Sends</h3>
-                    </div>
-                    <button onclick="loadCampaigns()" style="margin-bottom: 1rem; font-size:0.8rem; padding: 0.4rem 0.8rem;">Refresh</button>
-                    <div id="campaignsListContainer" style="display:flex; flex-direction:column; gap:1rem;"></div>
-                </div>
+            <div class="panel-body">
+              <textarea id="systemPromptInput" style="min-height:160px;" placeholder="You are a helpful WhatsApp assistant. Provide concise and helpful answers..."></textarea>
+              <button class="btn btn-primary btn-full btn-lg" style="margin-top:12px;" onclick="savePrompt()">Save instructions</button>
             </div>
-        </main>
+          </div>
+        </div>
+      </div>
+
+      <!-- REVIEW QUEUE PAGE -->
+      <div class="page" id="page-review">
+        <div class="page-head">
+          <div>
+            <h1>Review queue</h1>
+            <p>Replies waiting for your approval before they're sent.</p>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-body pad-0">
+            <table>
+              <thead><tr><th style="width:160px;">From</th><th>Incoming message</th><th>Suggested reply</th><th style="width:120px;">Actions</th></tr></thead>
+              <tbody id="reviewTbody">
+                <tr><td colspan="4" class="cell-empty">Nothing waiting for review right now.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- SAVED MESSAGES PAGE -->
+      <div class="page" id="page-saved">
+        <div class="page-head">
+          <div>
+            <h1>Saved messages</h1>
+            <p>Reusable messages you send often. Use {{name}} to personalize each one.</p>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head"><h2>Write a message</h2></div>
+          <div class="panel-body">
+            <div class="field">
+              <label>Title</label>
+              <input type="text" placeholder="e.g. Weekend greeting" id="msgTitle">
+            </div>
+            <div class="field">
+              <label>Message</label>
+              <textarea placeholder="Hi {{name}}, hope you're having a great weekend!" id="msgBody"></textarea>
+            </div>
+            <button class="btn btn-primary" style="margin-top:12px;" onclick="addSavedMessage()">Save message</button>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head"><h2>Your messages</h2></div>
+          <div class="panel-body pad-0">
+            <table>
+              <thead><tr><th>Title</th><th>Preview</th><th style="width:110px;">ID</th><th style="width:130px;">Actions</th></tr></thead>
+              <tbody id="savedTbody">
+                <tr><td colspan="4" class="cell-empty">You haven't saved any messages yet.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- SEND TO MANY PAGE -->
+      <div class="page" id="page-bulk">
+        <div class="page-head">
+          <div>
+            <h1>Send to many</h1>
+            <p>Send a saved message to a list of people, one by one, with natural pauses between each.</p>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="panel">
+            <div class="panel-head"><h2>Start sending</h2></div>
+            <div class="panel-body">
+              <div class="field">
+                <label>Name this batch</label>
+                <input type="text" placeholder="e.g. Monday update" id="batchName">
+              </div>
+              <div class="field">
+                <label>Choose a message</label>
+                <select id="batchMessage"><option value="">-- Pick one --</option></select>
+              </div>
+              <div class="field">
+                <label>List of contacts</label>
+                <div class="h">JSON array — e.g. [{"number":"919876543210","name":"Alice"}]</div>
+                <textarea class="mono-field" id="batchContacts" placeholder='[{"number": "919876543210", "name": "Alice"}]'></textarea>
+              </div>
+              <div class="field">
+                <label>Wait between messages (seconds)</label>
+                <div class="row-split">
+                  <div class="field">
+                    <label style="color:var(--text-faint); font-size:10.5px;">AT LEAST</label>
+                    <input type="number" class="mono-field" value="8" id="waitMin" min="1">
+                  </div>
+                  <div class="field">
+                    <label style="color:var(--text-faint); font-size:10.5px;">UP TO</label>
+                    <input type="number" class="mono-field" value="25" id="waitMax" min="2">
+                  </div>
+                </div>
+              </div>
+              <div class="flow-preview">
+                <div class="flow-dot active"></div><div class="flow-track"></div>
+                <div class="flow-dot"></div><div class="flow-track"></div>
+                <div class="flow-dot"></div><div class="flow-track"></div>
+                <div class="flow-dot"></div>
+                <span class="flow-label">random pause each send</span>
+              </div>
+              <button class="btn btn-primary btn-full btn-lg" style="margin-top:12px;" onclick="startBatch()">Start sending</button>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-head">
+              <h2>Past and current sends</h2>
+              <button class="link-btn" onclick="loadCampaigns(); showToast('Refreshed campaigns');">Refresh</button>
+            </div>
+            <div class="panel-body pad-0">
+              <table>
+                <thead><tr><th>Batch</th><th style="width:80px;">Sent/Total</th><th style="width:110px;">Status</th><th style="width:100px;">Started</th></tr></thead>
+                <tbody id="batchTbody">
+                  <tr><td colspan="4" class="cell-empty">You haven't sent anything yet.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
-    
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="app.js"></script>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
