@@ -1,6 +1,6 @@
 <div align="center">
   <!-- Dashboard Screenshot -->
-  <img src="screenshot.png" alt="WhatsApp AI Agent Dashboard" width="850" style="border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); margin-bottom: 25px;"/>
+  <img src="https://github.com/user-attachments/assets/cc6510a2-a788-45be-8db9-8ce667f3ba46" alt="WhatsApp AI Agent Dashboard" width="850" style="border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); margin-bottom: 25px;"/>
   
   <h1 style="font-size: 2.5em; font-weight: 800;">🚀 Self-Hosted WhatsApp AI Agent</h1>
   <p style="font-size: 1.2em; color: #888;">
