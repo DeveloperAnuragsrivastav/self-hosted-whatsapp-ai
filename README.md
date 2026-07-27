@@ -1,7 +1,8 @@
 <div align="center">
   <!-- When you upload your screenshot to GitHub, replace this image or ensure your screenshot is named 'screenshot.png' in the repo -->
-  <img src="screenshot.png" alt="WhatsApp AI Assistant Dashboard" width="800" style="border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); margin-bottom: 20px;"/>
-  
+  <img src="https://github.com/user-attachments/assets/cc6510a2-a788-45be-8db9-8ce667f3ba46" alt="WhatsApp AI Assistant Dashboard" width="800" style="border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); margin-bottom: 20px;"/>
+ 
+
   <h1>WhatsApp AI Assistant</h1>
   <p>A fully self-hosted, open-source WhatsApp AI assistant with a beautiful glassmorphism dashboard.</p>
 </div>
