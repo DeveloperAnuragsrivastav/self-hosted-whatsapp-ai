@@ -97,7 +97,7 @@ This project is fully Dockerized and heavily optimized for 1-click deployment on
 - `brain.js`: The neural core interacting with Groq SDK.
 - `campaigns.js`: Background asynchronous worker for bulk messaging.
 - `public/`: The raw HTML/CSS/JS for the frontend UI.
-- `data/`: *(Ignored by Git)* Persistent encrypted storage for session auth, config, and logs.
+- `data/`: Persistent encrypted storage for session auth, config, and logs.
 
 ---
 
