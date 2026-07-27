@@ -1,14 +1,14 @@
 {
-  "name": "whatsapp-ai-bot",
+  "name": "self-hosted-whatsapp-ai",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "An open-source, fully self-hosted WhatsApp AI Agent powered by Groq. Built by Anurag Srivastav.",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": ["whatsapp", "ai", "agent", "llm", "groq", "bot", "self-hosted", "dashboard"],
+  "author": "Anurag Srivastav (@DeveloperAnuragsrivastav)",
+  "license": "MIT",
   "type": "commonjs",
   "dependencies": {
     "dotenv": "^17.4.2",
