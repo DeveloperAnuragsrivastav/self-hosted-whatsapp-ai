@@ -20,6 +20,30 @@ const server = http.createServer(app);
 const io = new Server(server);
 
 app.use(express.json());
+
+// Basic Authentication Middleware to protect the dashboard
+app.use((req, res, next) => {
+    const authheader = req.headers.authorization;
+    const user = process.env.DASHBOARD_USER || 'admin';
+    const pass = process.env.DASHBOARD_PASS || 'admin';
+
+    if (!authheader) {
+        res.setHeader('WWW-Authenticate', 'Basic');
+        return res.status(401).send('Authentication required');
+    }
+
+    const auth = Buffer.from(authheader.split(' ')[1], 'base64').toString().split(':');
+    const reqUser = auth[0];
+    const reqPass = auth[1];
+
+    if (reqUser === user && reqPass === pass) {
+        next();
+    } else {
+        res.setHeader('WWW-Authenticate', 'Basic');
+        return res.status(401).send('Invalid credentials');
+    }
+});
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 const configPath = path.join(__dirname, 'data', 'config.json');
@@ -131,8 +155,8 @@ app.post('/api/send', async (req, res) => {
 initializeWhatsApp(io);
 
 const PORT = process.env.PORT || 3000;
-server.listen(PORT, () => {
-    console.log(`WhatsApp AI Bot Dashboard running on http://localhost:${PORT}`);
+server.listen(PORT, '0.0.0.0', () => {
+    console.log(`WhatsApp AI Bot Dashboard running on http://0.0.0.0:${PORT}`);
 });
 
 // 2. Graceful Shutdown (SIGTERM / SIGINT)
