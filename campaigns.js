@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const { sendMessage } = require('./whatsapp');
+const { parseSpintax, gaussianRandom } = require('./utils/antiBan');
 
 const campaignsPath = path.join(__dirname, 'data', 'campaigns.json');
 const configPath = path.join(__dirname, 'data', 'config.json');
@@ -50,8 +51,10 @@ async function startCampaign(campaign) {
             const config = getConfig();
             const contact = campaign.audience[i];
             
+            // Anti-Ban: Apply Spintax first to randomize message structure
+            let msgText = parseSpintax(campaign.templateText);
+            
             // Format message variables (e.g. {{name}})
-            let msgText = campaign.templateText;
             for (const [key, value] of Object.entries(contact)) {
                 const regex = new RegExp(`{{${key}}}`, 'g');
                 msgText = msgText.replace(regex, value);
@@ -104,7 +107,7 @@ async function startCampaign(campaign) {
             if (i < campaign.audience.length - 1 && campaign.status === 'Running') {
                 const delayMin = campaign.delayMin || 5;
                 const delayMax = campaign.delayMax || 15;
-                const waitTime = Math.floor(Math.random() * (delayMax - delayMin + 1) + delayMin) * 1000;
+                const waitTime = gaussianRandom(delayMin * 1000, delayMax * 1000);
                 console.log(`[Campaign] Waiting ${waitTime / 1000} seconds before next message...`);
                 await delay(waitTime);
             }

@@ -1,6 +1,7 @@
 const { Client, LocalAuth } = require('whatsapp-web.js');
 const qrcode = require('qrcode');
 const { generateReply } = require('./brain');
+const { gaussianRandom } = require('./utils/antiBan');
 const fs = require('fs');
 const path = require('path');
 
@@ -57,7 +58,10 @@ async function sendMessage(to, text) {
             }
             if (chat) {
                 try { await chat.sendStateTyping(); } catch(e) {}
-                const delayMs = Math.min(1000 + (text.length * 50), 4000);
+                
+                // Anti-Ban: Human typing delay based on message length
+                const baseDelay = Math.min(1500 + (text.length * 60), 8000);
+                const delayMs = gaussianRandom(baseDelay - 500, baseDelay + 1500);
                 await new Promise(resolve => setTimeout(resolve, delayMs));
             }
             lastGlobalBotSend = Date.now();
@@ -209,6 +213,13 @@ let lastGlobalBotSend = 0;
             try { chat = await client.getChatById(`${fromNumber}@c.us`); } catch(e) {}
         }
 
+        // Anti-Ban: Delayed Read Receipt
+        if (chat) {
+            setTimeout(async () => {
+                try { await chat.sendSeen(); } catch (e) {}
+            }, gaussianRandom(1000, 3000));
+        }
+
         // START TYPING IMMEDIATELY WHILE AI THINKS!
         try {
             if (chat) {
@@ -248,7 +259,10 @@ let lastGlobalBotSend = 0;
                 if (chat) await chat.sendStateTyping();
             } catch(e) {}
             
-            const delayMs = Math.min(1000 + (aiResponse.length * 50), 4000);
+            // Anti-Ban: Realistic typing duration
+            const baseDelay = Math.min(1500 + (aiResponse.length * 60), 8000);
+            const delayMs = gaussianRandom(baseDelay - 500, baseDelay + 1500);
+            
             setTimeout(() => {
                 // Check if user intervened manually while the AI was generating this reply!
                 if (isChatPaused(chatId, config.handoverCooldownMinutes || 60)) {
